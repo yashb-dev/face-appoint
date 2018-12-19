@@ -1,0 +1,174 @@
+doctype html
+mixin signIn
+    section#SignIn
+        form(method="post" action="/login" enctype="multipart/form-data")
+            .label
+                label
+                | User Name
+            .input
+                input(name="username" type="text")
+            .label
+                label
+                | Password
+            .input
+                input(name="password" type="password")
+            .label
+                label
+                | Remember Me
+            .input
+                input(name="staySignedIn" type="checkbox")
+            div
+                input(type="submit" value="Sign In")
+        form(method='get' action='/register')
+            label New to FaceAppoint?
+            input(type='submit' value='Register Now!')
+
+mixin register
+    section#Register
+        form(method='post' action='/register' enctype='multipart/form-data')
+            div
+                label
+                | First Name:
+                input(name='first_name' type='text')
+            div
+                label
+                | Last Name:
+                input(name='last_name' type='text')
+            div
+                label
+                | User Name:
+                input(name='username' type='text')
+            div
+                label
+                | Password:
+                input(name='password' type='text')
+            div
+                label
+                | Register As:
+                select(name='account_type')
+                    option(value='customer') Customer
+                    option(value='calendar_owner') Calender Owner
+                    option(value='calendar_manager') Calendar Manager
+            div
+                input(type='submit' value='Submit')
+
+mixin dashboard(items)
+    section#Overview
+        div
+            table
+                tr
+                    th Appointment
+                    th With
+                    th On
+                    th From
+                    th Until
+                    th Status
+                - each apt in items
+                    tr
+                        td #{apt.name}
+                        if user.account_type == 'customer'
+                            td #{apt.service_provider}
+                        if user.account_type == 'calendar_owner'
+                            td #{apt.service_requester}
+                        td #{apt.date}
+                        td #{apt.start_time}
+                        td #{apt.end_time}
+                        td #{apt.status}
+        div
+            a(href='/book') Book a new Appointment
+
+mixin book_search
+    section#booking
+        form(method='post' action='/book' enctype='multipart/form-data')
+            div
+                label
+                | Search for the service you need
+            div
+                input(name='search' type='text')
+            div
+                input(type='submit' value='Search')
+
+mixin book_results
+    section#book_results
+        table
+            tr
+                th Service Provider
+                th Book
+            - each item in items
+                tr
+                    td #{item.first_name}, #{item.last_name}
+                    td
+                        form(method='post' action='/user')
+                            button(type='submit' name='user' value=item.username) Book Now
+
+mixin book_form
+    section#book_form
+        form(method='post' action='/request' style="text-align:center;")
+            div
+                label
+                | Provider:
+                input(type='text' name='service_provider' value=item.username readonly)
+            div
+                label
+                | Requester:
+                input(type='text' name='service_requester' value=user.username readonly)
+            div
+                label
+                | Select Date:
+                input(type='date' name='date')
+            div
+                label
+                | Select Time:
+                input(type='time' name='time')
+            div
+                label
+                | Select Service:
+                select(name='service_type')
+                    -each type in item.service_types
+                        option(value=type) #{type}
+            div
+                label
+                | Description:
+                input(type='text' name='name')
+            div 
+                input(type='submit' value='Request Booking!')
+                
+    
+
+html(lang="en")
+    head
+        title FaceAppoint
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto")
+        link(rel="stylesheet" href="//fonts.googleapis.com/css?family=Gentium+Book+Basic:700")
+        link(rel='stylesheet' href='/style.css')
+
+    header
+        nav
+            a(href='/') FaceAppoint
+            if user
+                a(href='/book') Book
+                a(href='/dashboard') My Appointments
+                a(href='/signout') Sign Out
+
+    body
+        if page_id == 'main'
+            h3 Sign In
+            +signIn
+        if page_id == 'dashboard'
+            h3 Welcome #{user.first_name}
+            +dashboard(items)
+        if page_id == 'register'
+            h3 Registration
+            +register
+        if page_id == 'book_search'
+            h3 Booking
+            +book_search
+        if page_id == 'book_results'
+            h3 Booking
+            +book_search
+            +book_results
+        if page_id == 'user_profile'
+            h3 #{item.first_name} , #{item.last_name}
+            +book_form
+            
