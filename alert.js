@@ -9,15 +9,15 @@ exports.checkAlerts = (event, callback) => {
 
   function sendMail(to, message, id) {
     var transporter = nodemailer.createTransport({
-      service: "gmail",
+      service: "[Your email service]",
       auth: {
-        user: "face.appoint@gmail.com",
-        pass: "3125897460"
+        user: "[example@example.com]",
+        pass: "[Your Password]"
       }
     });
 
     var mailOptions = {
-      from: "face-appoint@gmail.com",
+      from: "[example@example.com]",
       to: to,
       subject: "Your appointment is soon. ID:" + id,
       text: message
