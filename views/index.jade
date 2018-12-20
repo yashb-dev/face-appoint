@@ -1,139 +1,149 @@
 doctype html
 mixin signIn
     section#SignIn
-        form(method="post" action="/login" enctype="multipart/form-data")
-            .label
-                label
-                | User Name
-            .input
-                input(name="username" type="text")
-            .label
-                label
-                | Password
-            .input
-                input(name="password" type="password")
-            .label
-                label
-                | Remember Me
-            .input
-                input(name="staySignedIn" type="checkbox")
-            div
-                input(type="submit" value="Sign In")
-        form(method='get' action='/register')
-            label New to FaceAppoint?
-            input(type='submit' value='Register Now!')
+        form(method="post" action="/login" enctype="multipart/form-data" class='form-group' style='width:50%; margin-left:25%; text-align:center')
+            table(class='table')
+                tr
+                    td(style='text-align:right; width:50%; margin-right:50%')
+                        label
+                        | User Name:
+                    td(style='text-align:left;')
+                        input(name='username' type='text')
+                tr
+                    td(style='text-align:right;')
+                        label
+                        | Password:
+                    td(style='text-align:left;')
+                        input(name='password' type='password')
+            input(class='btn bg-dark' type="submit" value="Sign In" style='color:linen;')
+        form(method='get' action='/register' class='form-group bg-light' style='text-align:center; width:50%; margin-left:25%;')
+            input(class='btn bg-dark' type='submit' value='Not Registered?' style='color:linen;')
 
 mixin register
     section#Register
-        form(method='post' action='/register' enctype='multipart/form-data')
-            div
-                label
-                | First Name:
-                input(name='first_name' type='text')
-            div
-                label
-                | Last Name:
-                input(name='last_name' type='text')
-            div
-                label
-                | User Name:
-                input(name='username' type='text')
-            div
-                label
-                | Password:
-                input(name='password' type='text')
-            div
-                label
-                | Register As:
-                select(name='account_type')
-                    option(value='customer') Customer
-                    option(value='calendar_owner') Calender Owner
-                    option(value='calendar_manager') Calendar Manager
-            div
-                input(type='submit' value='Submit')
+        form(method='post' action='/register' enctype='multipart/form-data'  class='form-group' style='text-align:center; width:50%; margin-left:25%;')
+            table(class='table')
+                tr
+                    td(style='text-align:right; width:50%; margin-right:50%')
+                        label
+                        | First Name:
+                    td(style='text-align:left')
+                        input(name='first_name' type='text')
+                tr
+                    td(style='text-align:right; width:50%; margin-right:50%')
+                        label
+                        | Last Name:
+                    td(style='text-align:left')
+                        input(name='last_name' type='text')
+                tr
+                    td(style='text-align:right; width:50%; margin-right:50%')
+                        label
+                        | Email:
+                    td(style='text-align:left')
+                        input(name='email' type='text')
+                tr
+                    td(style='text-align:right; width:50%; margin-right:50%')
+                        label
+                        | Username:
+                    td(style='text-align:left')
+                        input(name='username' type='text')
+                tr
+                    td(style='text-align:right; width:50%; margin-right:50%')
+                        label
+                        | Password:
+                    td(style='text-align:left')
+                        input(name='password' type='password')
+                tr
+                    td(style='text-align:right; width:50%; margin-right:50%')
+                        label
+                        | Register As:
+                    td(style='text-align:left')
+                        select(name='account_type')
+                            option(value='customer') Customer
+                            option(value='calendar_owner') Calender Owner
+                            option(value='calendar_manager') Calendar Manager
+            input(class='btn bg-dark' type="submit" value="Register" style='color:linen;')
 
 mixin dashboard(items)
     section#Overview
-        div
-            table
-                tr
-                    th Appointment
-                    th With
-                    th On
-                    th From
-                    th Until
-                    th Status
-                - each apt in items
-                    tr
-                        td #{apt.name}
-                        if user.account_type == 'customer'
-                            td #{apt.service_provider}
-                        if user.account_type == 'calendar_owner'
-                            td #{apt.service_requester}
-                        td #{apt.date}
-                        td #{apt.start_time}
-                        td #{apt.end_time}
-                        td #{apt.status}
-        div
-            a(href='/book') Book a new Appointment
+        table(class='table' style="width:75%; margin-left:12%;")
+            tr(class='text-dark' style="text-align:center;")
+                th Appointment
+                th With
+                th On
+                th From
+                th Until
+                th Status
+            - each apt in items
+                tr(class='text-dark' style='text-align:center;')
+                    td #{apt.name}
+                    if user.account_type == 'customer'
+                        td #{apt.service_provider}
+                    if user.account_type == 'calendar_owner'
+                        td #{apt.service_requester}
+                    td #{apt.date}
+                    td #{apt.start_time}
+                    td #{apt.end_time}
+                    td #{apt.status}
+        div(style="text-align:center;")
+            a(class='btn bg-dark' style='color:linen;' href='/book') Book a new Appointment
 
 mixin book_search
     section#booking
         form(method='post' action='/book' enctype='multipart/form-data')
-            div
-                label
-                | Search for the service you need
-            div
-                input(name='search' type='text')
-            div
-                input(type='submit' value='Search')
+            ul(class='list-group' style='text-align:center')
+                li(class='list-group-item bg-light border-0 text-dark')
+                    label
+                    | Search for the service you need
+                li(class='list-group-item bg-light border-0')
+                    input(name='search' type='text')
+                li(class='list-group-item bg-light border-0')
+                    input(class='btn bg-dark' style='color:linen' type='submit' value='Search')
 
 mixin book_results
     section#book_results
-        table
-            tr
+        table(class='table' style='width:50%; margin-left:25%;')
+            tr(class='text-dark' style='text-align:center;')
                 th Service Provider
                 th Book
             - each item in items
-                tr
-                    td #{item.first_name}, #{item.last_name}
+                tr(class='text-dark' style='text-align:center;')
+                    td #{item.first_name} #{item.last_name}
                     td
                         form(method='post' action='/user')
-                            button(type='submit' name='user' value=item.username) Book Now
+                            button(class='btn bg-dark' style='color:linen;' type='submit' name='user' value=item.username) Book Now
 
 mixin book_form
     section#book_form
         form(method='post' action='/request' style="text-align:center;")
-            div
-                label
-                | Provider:
-                input(type='text' name='service_provider' value=item.username readonly)
-            div
-                label
-                | Requester:
-                input(type='text' name='service_requester' value=user.username readonly)
-            div
-                label
-                | Select Date:
-                input(type='date' name='date')
-            div
-                label
-                | Select Time:
-                input(type='time' name='time')
-            div
-                label
-                | Select Service:
-                select(name='service_type')
-                    -each type in item.service_types
-                        option(value=type) #{type}
-            div
-                label
-                | Description:
-                input(type='text' name='name')
-            div 
-                input(type='submit' value='Request Booking!')
-                
-    
+            table(class='table text-dark' style='width:50%; margin-left:25%')
+                tr
+                    th(style='text-align:right') Provider:
+                    td(style='text-align:left;')
+                        input(type='text' name='service_provider' value=item.username readonly)
+                tr
+                    th(style='text-align:right') Requester:
+                    td(style='text-align:left;')
+                        input(type='text' name='service_requester' value=user.username readonly)
+                tr
+                    th(style='text-align:right') Select Date:
+                    td(style='text-align:left;')
+                        input(type='date' name='date')
+                tr
+                    th(style='text-align:right') Select Time:
+                    td(style='text-align:left;')
+                        input(type='time' name='time')
+                tr
+                    th(style='text-align:right') Select Service:
+                    td(style='text-align:left;')
+                        select(name='service_type')
+                            -each type in item.service_types
+                                option(value=type) #{type}
+                tr
+                    th(style='text-align:right') Description:
+                    td(style='text-align:left;')
+                        input(type='text' name='name')
+            input(class='btn bg-dark' style='color:linen;' type='submit' value='Request Booking!')               
 
 html(lang="en")
     head
@@ -141,34 +151,52 @@ html(lang="en")
         meta(name="viewport" content="width=device-width, initial-scale=1.0")
         link(rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto")
         link(rel="stylesheet" href="//fonts.googleapis.com/css?family=Gentium+Book+Basic:700")
-        link(rel='stylesheet' href='/style.css')
+        link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous")
 
     header
-        nav
-            a(href='/') FaceAppoint
+        nav(class='navbar bg-dark navbar-expand-sm')
+            ul(class='navbar-nav')
+                li(class='nav-item' style='margin-right:20px')
+                    a(class='btn bg-light' style='color:dimgrey;' href='/') FaceAppoint
+                li(class='nav-item')
+                    a(class='btn bg-light' style='color:dimgrey;' href='/about') About
             if user
-                a(href='/book') Book
-                a(href='/dashboard') My Appointments
-                a(href='/signout') Sign Out
+                li(class='nav-item')
+                    a(class='btn bg-light' style='color:dimgrey;' href='/book') Book
+                li(class='nav-item')
+                    a(class='btn bg-light' style='color:dimgrey;' href='/dashboard') My Appointments
+                li(class='nav-item')
+                    a(class='btn bg-light' style='color:dimgrey;' href='/signout') Sign Out
+            else
+                li(class='nav-item')
+                    a(class='btn bg-light' style='color:dimgrey;' href='/') Sign In
+            
 
-    body
+    body(class='bg-light')
         if page_id == 'main'
-            h3 Sign In
+            h3(class='text-dark' style='text-align:center') Sign In
             +signIn
         if page_id == 'dashboard'
-            h3 Welcome #{user.first_name}
+            h3(class='text-dark' style='text-align:center')  Welcome, #{user.first_name}
             +dashboard(items)
         if page_id == 'register'
-            h3 Registration
+            h3(class='text-dark' style='text-align:center')  Welcome to FaceAppoint
             +register
         if page_id == 'book_search'
-            h3 Booking
+            h3(class='text-dark' style='text-align:center')  Booking
             +book_search
         if page_id == 'book_results'
-            h3 Booking
+            h3(class='text-dark' style='text-align:center')  Booking
             +book_search
             +book_results
         if page_id == 'user_profile'
-            h3 #{item.first_name} , #{item.last_name}
+            h3(class='text-dark' style='text-align:center') Booking with #{item.first_name} #{item.last_name}
             +book_form
+        if page_id == 'about'
+            h3(class='text-dark' style='text-align:center') About Yash
+            div(class='text-dark' style='text-align:center; width:60%; margin-left:20%')
+                p
+                | The only reason you clicked here is because you clicked everywhere else and are now wondering what else
+                | I have to offer. Come back later and lower your expectations you greedy fuck. P.S don't ask me why I 
+                | styled this page.
             

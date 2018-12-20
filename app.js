@@ -88,6 +88,10 @@ app.post("/user", function(req, res, next) {
   });
 });
 
+app.get('/about', function(req,res,next){
+  res.render('index', {page_id:'about'});
+});
+
 app.post("/request", function(req, res, next) {
   data.submitRequest(req.body, function(err, ID) {
     if (err) next(err);
